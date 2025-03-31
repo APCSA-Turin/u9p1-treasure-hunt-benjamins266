@@ -3,23 +3,34 @@ package com.example.project;
 public class Sprite {
     private int x, y;
 
+    //sprite class constructor
     public Sprite(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
-    public int getX(){return 1;}
-    public int getY(){return 1;}
+    //returns the x coordinate
+    public int getX(){return x;}
+    //returns the y coordinate
+    public int getY(){return y;}
 
-    public void setX(){}
-    public void setY(){}
-
-    public String getCoords(){ //returns the coordinates of the sprite ->"(x,y)"
-        return "";
+    //setter method for the x coordinate
+    public void setX(int newX){
+        x = newX;
+    }
+    //setter method for the y coordinate
+    public void setY(int newY){
+        y = newY;
     }
 
-    public String getRowCol(int size){ //returns the row and column of the sprite -> "[row][col]"
-        return "[][]";
+    //returns the coordinate in the format (x,y)
+    public String getCoords(){
+        return "(" + x + "," + y + ")";
+    }
+
+    //returns the rows and columns in the format [row][col]
+    public String getRowCol(int size){
+        return "[" + (size-y-1) + "][" + x + "]";
     }
     
 
