@@ -8,12 +8,14 @@ public class Game{
     private Treasure[] treasures;
     private Trophy trophy;
     private int size; 
+    private int count;
 
     //game class constructor
     public Game(int size){ 
         this.size = size;
         initialize(); //calls initialize method
         play(); //calls play method
+        count = 0;
     }
 
     public static void clearScreen() { //do not modify
@@ -127,18 +129,22 @@ public class Game{
                         //used to move left
                         if(move.equals("a")){
                             currentX--;
+                            count++;
                         }
                         //used to move right
                         if(move.equals("d")){
                             currentX++;
+                            count++;
                         }
                         //used to move up
                         if(move.equals("w")){
                             currentY++;
+                            count++;
                         }
                         //used to move down
                         if(move.equals("s")){
                             currentY--;
+                            count++;
                         }
                         //box is an object in the current place of the player
                         Sprite box = grid.getGrid()[size-currentY-1][currentX];
@@ -204,6 +210,63 @@ public class Game{
                             player.move(move);
                             grid.placeSprite(player);
                         }
+                        //EXTRA CREDIT: ENEMIES MOVING
+                        //iterates through the enemies array to go through each one of the enemies
+                        for (int i = 0; i<enemies.length; i++){
+                            //creates variables for each one of the enemies' coordinates
+                            int origEnemyX = enemies[i].getX();
+                            int origEnemyY = enemies[i].getY();
+                            int currEnemyX = enemies[i].getX();
+                            int currEnemyY = enemies[i].getY();
+                            //this makes the enemies move every 2 moves
+                            if(count % 2 ==0){
+                                //if the enemy's x coordinate is greater than the player's x coordinate
+                            if(enemies[i].getX()>player.getX()){
+                                //it decreases the enemy's x coordinate by 1
+                                currEnemyX--;
+                                //if the box the enemy is moving to is the player, it decreases the number of lives by 1
+                                if(grid.getGrid()[size-enemies[i].getY()-1][enemies[i].getX()-1] instanceof Player){
+                                    player.setLives(player.getLives()-1);
+                                }
+                                //if the enemy's x coordinate is less than the player's x coordinate
+                            } else if (enemies[i].getX()<player.getX()){
+                                //it increases the enemy's x coordinate by 1
+                                currEnemyX++;
+                                //if the box the enemy is moving to is the player, it decreases the number of lives by 1
+                                if(grid.getGrid()[size-enemies[i].getY()-1][enemies[i].getX()+1] instanceof Player){
+                                    player.setLives(player.getLives()-1);
+                                }
+                                //if the enemy's y coordinate is less than the player's y coordinate
+                            } else if(enemies[i].getY()<player.getY()){
+                                //it increases the enemy's y coordinate by 1
+                                currEnemyY++;
+                                //if the box the enemy is moving to is the player, it decreases the number of lives by 1
+                                if(grid.getGrid()[size-enemies[i].getY()-2][enemies[i].getX()] instanceof Player){
+                                    player.setLives(player.getLives()-1);
+                                }
+                                //if the enemy's y coordinate is greater than the player's y coordinate
+                            } else if(enemies[i].getY()>player.getY()){
+                                //it decreases the enemy's y coordinate by 1
+                                currEnemyY--;
+                                //if the box the enemy is moving to is the player, it decreases the number of lives by 1
+                                if(grid.getGrid()[size-enemies[i].getY()][enemies[i].getX()] instanceof Player){
+                                    player.setLives(player.getLives()-1);
+                                }
+                            }
+                            //creating a new dot object to replace the old space the enemy was in, and for the new one its in
+                            Dot oDot = new Dot(origEnemyX, origEnemyY);
+                            Dot nDot = new Dot(currEnemyX, currEnemyY);
+                            //setting the enemy's coordinates to the new coordinates
+                            enemies[i].setX(currEnemyX);
+                            enemies[i].setY(currEnemyY);
+                            //placing the new dot objects and the enemy into the new place
+                            grid.placeSprite(oDot);
+                            grid.placeSprite(nDot);
+                            grid.placeSprite(enemies[i]);
+                          
+                        }
+   
+                        }
                     }
                 }
             }
@@ -247,6 +310,6 @@ public class Game{
     public static void main(String[] args) {
         new Game(10);
     }
-
 }
+
 

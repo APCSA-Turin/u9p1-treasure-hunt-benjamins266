@@ -21,6 +21,11 @@ public class Player extends Sprite {
     //returns the status of win
     public boolean getWin(){return win;}
 
+    //setter method for lives
+    public void setLives(int lives){
+        numLives = lives;
+    }
+
     //moves the coordinates of the player
     public void move(String direction) {
         //if the direction is "w"
